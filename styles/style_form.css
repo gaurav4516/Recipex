@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Poppins:wght@300;400&display=swap');
+
+/* Base Styles */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --accent-primary: #8BC6EC;
+    --accent-secondary: #9599E2;
+    --transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+    position: relative;
+    animation: animatebottom 0.8s ease-out;
+}
+
+@keyframes animatebottom { 
+    from { transform: translateY(30px); opacity:0 } 
+    to { transform: translateY(0); opacity:1 }
+}
+
+body {
+    background: url(https://wallpaperaccess.com/full/826922.jpg) center/cover fixed;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Poppins', 'Open Sans', sans-serif;
+    color: var(--text-primary);
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.08);
+    z-index: -1;
+}
+
+/* Glassmorphism Base */
+.logo, .menu-bar, .contact-us, 
+.recipe-form, .contact-item, .on_submit {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: var(--transition);
+}
+
+/* Navigation */
+.logo {
+    border-radius: 25px;
+    padding: 12px 16px;
+    margin: 0 8px;
+    display: inline-flex;
+    align-items: center;
+    
+    i {
+        font-size: 1.75rem;
+        background-image: linear-gradient(315deg, var(--accent-primary), var(--accent-secondary));
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding-right: 10px;
+    }
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        
+        a { color: #2d2d2d; }
+    }
+}
+
+.menu-bar {
+    border-radius: 25px;
+    padding: 8px 12px;
+    
+    li {
+        padding: 10px 14px;
+        margin: 0 6px;
+        transition: var(--transition);
+        
+        &:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.05);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            
+            a { color: #2d2d2d; }
+        }
+    }
+}
+
+/* Forms & Buttons */
+.recipe-form, .contact-us {
+    width: 60%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    
+    h1, h2 {
+        background-image: linear-gradient(315deg, var(--accent-primary), var(--accent-secondary));
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+input, textarea, select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: var(--text-primary);
+    transition: var(--transition);
+    
+    &:focus {
+        border-color: rgba(255, 255, 255, 0.4);
+        outline: none;
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+button, .btn-primary {
+    background: linear-gradient(315deg, var(--accent-primary), var(--accent-secondary));
+    color: #2d2d2d;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: var(--transition);
+    
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Contact Section */
+.contact-item {
+    padding: 1rem;
+    margin: 1rem 0.5rem;
+    
+    img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    
+    p {
+        background: linear-gradient(315deg, var(--accent-primary), var(--accent-secondary));
+        color: #2d2d2d;
+        padding: 0.25rem 0.5rem;
+        border-radius: 5px;
+    }
+}
+
+/* Success Message */
+.on_submit {
+    padding: 3rem;
+    
+    i {
+        font-size: 5rem;
+        background-image: linear-gradient(315deg, var(--accent-primary), var(--accent-secondary));
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+    .recipe-form, .contact-us {
+        width: 90%;
+        padding: 1.5rem;
+    }
+    
+    .menu-bar {
+        padding: 6px;
+        
+        li {
+            padding: 8px 12px;
+            margin: 0 4px;
+        }
+    }
+}
