@@ -4,4 +4,3 @@
 - ingredients
 - logos
 - main
-- team

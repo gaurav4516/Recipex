@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
     <head>
         <title>RecipeX | Smart Map</title>
@@ -8,7 +7,6 @@
 
         <!--Google Fonts-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     </head>
     <body>
         <!--Navbar-->
@@ -22,7 +20,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="index.html#latest_recipes">Latest Recipes</a></li>
                 <li><a href="index.html#cuisines">Cuisines</a></li>
-                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="map.html">Explore Recipes</a></li>
                 <li><a href="create_recipe.html" style="text-decoration: none;">Create Recipe</a></li>
             </ul>
@@ -36,10 +34,15 @@
                     <td>
                         <img src="assets/main/map_recipes.png" alt="eurasia_map" width="700px" height="495px" usemap="#cusines">
                         <map name="cusines">
+                            <!-- Existing Areas -->
                             <area shape="rect" coords="513,328,607,370" href="south_indian_map.html" alt="SOUTH INDIAN" target="display_area">
                             <area shape="rect" coords="496,250,586,303" href="north_indian_map.html" alt="NORTH INDIAN" target="display_area">
                             <area shape="rect" coords="592,229,653,283" href="chinese_map.html" alt="CHINESE" target="display_area">
                             <area shape="rect" coords="283,200,342,246" href="italian_map.html" alt="ITALIAN" target="display_area">
+                            
+                            <!-- New Added Areas -->
+                            <area shape="rect" coords="400,250,490,300" href="west_india_map.html" alt="WEST INDIA" target="display_area">
+                            <area shape="rect" coords="600,300,690,350" href="east_india_map.html" alt="EAST INDIA" target="display_area">
                         </map>
                     </td>
                     <td>
@@ -51,8 +54,7 @@
             </table>
         </div>
 
-       
-               
+        <div class="footer">
             <p>© 2025 All Rights Reserved, <a href="index.html" style="color: white; font-weight: bold;">RecipeX</a></p>
         </div>
     </body>

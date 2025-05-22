@@ -127,3 +127,15 @@ function searchList()
         }
     }
 }
+
+
+function searchList() {
+    const searchInput = document.getElementById('search_key').value.toLowerCase();
+    const recipeCards = document.querySelectorAll('.recipe-card');
+
+    recipeCards.forEach(card => {
+        const dishName = card.querySelector('h4').textContent.toLowerCase();
+        // Show/hide cards based on search match
+        card.style.display = dishName.includes(searchInput) ? 'block' : 'none';
+    });
+}
