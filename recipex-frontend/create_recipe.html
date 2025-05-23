@@ -247,72 +247,83 @@
     </form>
   </div>
 
-  <script>
-    let ingredientCount = 1;
+  
+     <script>
+  let ingredientCount = 1;
 
-    function addIngredient() {
-      ingredientCount++;
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.placeholder = 'Enter Ingredient ' + ingredientCount;
-      input.className = 'ingredient-input';
-      input.required = true;
-      document.getElementById('ingredients').appendChild(input);
+  function addIngredient() {
+    ingredientCount++;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Enter Ingredient ' + ingredientCount;
+    input.className = 'ingredient-input';
+    input.required = true;
+    document.getElementById('ingredients').appendChild(input);
+  }
+
+  function removeIngredient() {
+    const container = document.getElementById('ingredients');
+    if (container.children.length > 1) {
+      container.removeChild(container.lastChild);
+      ingredientCount--;
+    }
+  }
+
+  document.getElementById('create_recipe_form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const title = document.getElementById('recipeTitle').value.trim();
+    const description = document.getElementById('recipeDescription').value.trim();
+    const steps = document.getElementById('recipeSteps').value.trim();
+    const category = document.getElementById('category').value;
+    const vegNonVeg = document.getElementById('vnv').value;
+    const foodImageInput = document.getElementById('food_image');
+
+    const ingredients = Array.from(document.querySelectorAll('.ingredient-input')).map(input => input.value.trim());
+
+    // Prepare FormData for submission
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('steps', steps);
+    formData.append('category', category);
+    formData.append('vegNonVeg', vegNonVeg);
+    formData.append('ingredients', JSON.stringify(ingredients));
+    if (foodImageInput.files.length > 0) {
+      formData.append('food_image', foodImageInput.files[0]);
     }
 
-    function removeIngredient() {
-      const container = document.getElementById('ingredients');
-      if (container.children.length > 1) {
-        container.removeChild(container.lastChild);
-        ingredientCount--;
-      }
-    }
-
-    document.getElementById('create_recipe_form').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const title = document.getElementById('recipeTitle').value;
-      const description = document.getElementById('recipeDescription').value;
-      const steps = document.getElementById('recipeSteps').value;
-      const ingredients = Array.from(document.querySelectorAll('.ingredient-input')).map(i => i.value);
-      const category = document.getElementById('category').value;
-      const vegNonVeg = document.getElementById('vnv').value;
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-
-      const foodImageInput = document.getElementById('food_image');
-      const formData = new FormData();
-
-      formData.append('title', title);
-      formData.append('description', description);
-      formData.append('steps', steps);
-      formData.append('category', category);
-      formData.append('vegNonVeg', vegNonVeg);
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('ingredients', JSON.stringify(ingredients));
-
-      if (foodImageInput.files.length > 0) {
-        formData.append('food_image', foodImageInput.files[0]);
-      }
-
-      fetch('http://localhost:3000/submit-recipe', {
+    try {
+      const res = await fetch('https://receipex-backend1.onrender.com/submit-recipe', {
         method: 'POST',
         body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message || 'Recipe submitted!');
-        this.reset();
-        ingredientCount = 1;
-        const ingredientsDiv = document.getElementById('ingredients');
-        ingredientsDiv.innerHTML = '<input type="text" class="ingredient-input" placeholder="Enter Ingredient 1" required />';
-      })
-      .catch(err => {
-        console.error('Error:', err);
-        alert('Failed to submit recipe.');
       });
-    });
-  </script>
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message || 'Recipe submitted successfully!');
+        this.reset();
+
+        // Reset ingredients input
+        ingredientCount = 1;
+        document.getElementById('ingredients').innerHTML = `
+          <input type="text" class="ingredient-input" placeholder="Enter Ingredient 1" required />
+        `;
+      } else {
+        alert(data.error || 'Failed to submit recipe. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Something went wrong. Please try again later.');
+    }
+  });
+</script>
+
+ 
 </body>
 </html>

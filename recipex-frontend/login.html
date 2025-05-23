@@ -91,38 +91,44 @@
     <div class="error" id="error"></div>
   </div>
 
-  <script>
-    const form = document.getElementById('loginForm');
-    const errorDiv = document.getElementById('error');
+ <script>
+  const form = document.getElementById('loginForm');
+  const errorDiv = document.getElementById('error');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      try {
-        const res = await fetch('https://receipex-backend.onrender.com/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, password })
-        });
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
 
-        const data = await res.json();
+    if (!email || !password) {
+      errorDiv.textContent = 'Please enter both email and password.';
+      return;
+    }
 
-        if (res.ok) {
-          window.location.href = 'index.html';
-        } else {
-          errorDiv.textContent = data.message || 'Login failed!';
-        }
-      } catch (error) {
-        errorDiv.textContent = 'Server error. Try again later.';
+    try {
+      const res = await fetch('https://receipex-backend1.onrender.com/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem('userEmail', email);
+        window.location.href = 'index.html';
+      } else {
+        errorDiv.textContent = data.error || 'Login failed!';
       }
-    });
+    } catch (error) {
+      console.error('❌ Login error:', error);
+      errorDiv.textContent = 'Server error. Try again later.';
+    }
+  });
+</script>
 
-  
 
-  </script>
 
 </body>
 </html>
