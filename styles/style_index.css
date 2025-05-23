@@ -452,5 +452,62 @@ form:hover .fa{
     margin-left: auto;
     padding-right: 30px;
 }
+/* ------------------ Mobile Responsive Adjustments ------------------ */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        background-size: cover; /* Maintains background image scaling */
+    }
 
+    /* Card container adjustments */
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 15px;
+    }
+
+    /* Recipe cards */
+    .recipe-card, 
+    .search_result_recipe {
+        width: 100%;
+        margin: 0;
+        max-width: none;
+    }
+
+    /* Menu adjustments */
+    .menu-bar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .menu-bar li {
+        flex: 1 1 150px;
+        text-align: center;
+        border-bottom: none;
+    }
+
+    /* Contact section */
+    .contact-details {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Stack cards in single column */
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Full-width menu items */
+    .menu-bar li {
+        flex-basis: 100%;
+    }
+    
+    /* Stack contact items */
+    .contact-details {
+        grid-template-columns: 1fr;
+    }
+}
 

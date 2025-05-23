@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RecipeX | Create Recipe</title>
+  <link rel="icon" href="../../../assets/logos/title_icon.png" type="image/icon type" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="assets/logos/title_icon.png" type="image/icon type">
+
+  <style>
+    /* Your existing CSS unchanged */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092') no-repeat center center/cover;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    nav {
+      width: 100%;
+      padding: 15px 30px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 30px 40px;
+      margin-top: 40px;
+      width: 90%;
+      max-width: 720px;
+      color: #fff;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #fff;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      appearance: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #eee;
+    }
+
+    select option {
+      color: black;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .ingredient-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .ingredient-btns {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .ingredient-btns button {
+      background: #00c9a7;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .ingredient-btns button:hover {
+      background: #00b39f;
+    }
+
+    .file-upload-label {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .file-upload-label input {
+      display: none;
+    }
+
+    .btn-submit, .btn-clear {
+      width: 48%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(135deg, #5a6dd0, #653b9a);
+    }
+
+    .btn-clear {
+      background: rgba(255,255,255,0.3);
+      color: white;
+    }
+
+    .btn-clear:hover {
+      background: rgba(255,255,255,0.5);
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div><strong>RecipeX</strong></div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="create_recipe.html">Create Recipe</a>
+      <a href="index.html#cuisines">All Recipes</a>
+      <a href="profile.html">Profile</a>
+    </div>
+  </nav>
+
+  <div class="form-container">
+    <h2>Submit Your Recipe</h2>
+    <form id="create_recipe_form">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required />
+
+      <label for="recipeTitle">Recipe Name</label>
+      <input type="text" id="recipeTitle" placeholder="Enter recipe name" required />
+
+      <label for="recipeDescription">About Recipe</label>
+      <textarea id="recipeDescription" rows="3" placeholder="Write a short description..." required></textarea>
+
+      <label for="recipeSteps">Steps</label>
+      <textarea id="recipeSteps" rows="4" placeholder="Write the recipe steps..." required></textarea>
+
+      <label>Ingredients</label>
+      <div id="ingredients">
+        <input type="text" class="ingredient-input" placeholder="Enter Ingredient 1" required />
+      </div>
+      <div class="ingredient-btns">
+        <button type="button" onclick="addIngredient()">+ Add Ingredient</button>
+        <button type="button" onclick="removeIngredient()">- Remove Ingredient</button>
+      </div>
+
+      <label for="category">Category</label>
+      <select id="category" required>
+        <option value="" disabled selected>Select Category</option>
+        <option>North Indian</option>
+        <option>South Indian</option>
+        <option>East Indian</option>
+        <option>West Indian</option>
+        <option>Italian</option>
+        <option>Chinese</option>
+        <option>Dessert</option>
+        <option>Beverages</option>
+      </select>
+
+      <label for="vnv">Veg / Non-Veg</label>
+      <select id="vnv" required>
+        <option value="" disabled selected>Select Type</option>
+        <option value="Veg">Veg</option>
+        <option value="Non-Veg">Non-Veg</option>
+      </select>
+
+      <label>Upload Food Image</label>
+      <label class="file-upload-label">
+        Select Image
+        <input type="file" id="food_image" />
+      </label>
+
+      <div class="button-row">
+        <button type="submit" class="btn-submit" id="submitRecipe">Submit</button>
+        <button type="reset" class="btn-clear">Clear</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let ingredientCount = 1;
+
+    function addIngredient() {
+      ingredientCount++;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Enter Ingredient ' + ingredientCount;
+      input.className = 'ingredient-input';
+      input.required = true;
+      document.getElementById('ingredients').appendChild(input);
+    }
+
+    function removeIngredient() {
+      const container = document.getElementById('ingredients');
+      if (container.children.length > 1) {
+        container.removeChild(container.lastChild);
+        ingredientCount--;
+      }
+    }
+
+    document.getElementById('create_recipe_form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const title = document.getElementById('recipeTitle').value;
+      const description = document.getElementById('recipeDescription').value;
+      const steps = document.getElementById('recipeSteps').value;
+      const ingredients = Array.from(document.querySelectorAll('.ingredient-input')).map(i => i.value);
+      const category = document.getElementById('category').value;
+      const vegNonVeg = document.getElementById('vnv').value;
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      const foodImageInput = document.getElementById('food_image');
+      const formData = new FormData();
+
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('steps', steps);
+      formData.append('category', category);
+      formData.append('vegNonVeg', vegNonVeg);
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('ingredients', JSON.stringify(ingredients));
+
+      if (foodImageInput.files.length > 0) {
+        formData.append('food_image', foodImageInput.files[0]);
+      }
+
+      fetch('http://localhost:3000/submit-recipe', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message || 'Recipe submitted!');
+        this.reset();
+        ingredientCount = 1;
+        const ingredientsDiv = document.getElementById('ingredients');
+        ingredientsDiv.innerHTML = '<input type="text" class="ingredient-input" placeholder="Enter Ingredient 1" required />';
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        alert('Failed to submit recipe.');
+      });
+    });
+  </script>
+</body>
+</html>
