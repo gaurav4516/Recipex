@@ -15,42 +15,66 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; URL='login.html'" />
+ 
    
 
 </head>
+<style>#welcomeMessage {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-left: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#logoutBtn {
+  background-color: #ffcc00;
+  color: black;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+}
+
+#logoutBtn:hover {
+  background-color: #e6b800;
+}
+</style>
 
 <body>
-    <nav>
-        <ul class="menu-bar">
-            <div class="logo">
-                <a href="index.html">
-                    <i class="material-icons">restaurant_menu</i>RecipeX
-                </a>
-            </div>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="index.html#latest_recipes">Latest Recipes</a></li>
-            <li><a href="index.html#cuisines">Cuisines</a></li>
-            <li><a href="ingredient_search.html">Ingredient Search</a></li>
-            <li><a href="map.html">Explore Recipes</a></li>
-            <li><a href="create_recipe.html" style="text-decoration: none;">Create Recipe</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
+    <h2 id="welcomeMessage" ></h2>
+    <div id="user-info" style="text-align:right; margin: 1rem;"></div>
 
+<nav>
+    <ul class="menu-bar">
+        <div class="logo">
+            <a href="index.html">
+                <i class="material-icons">restaurant_menu</i>RecipeX
+            </a>
+        </div>
+        <li><a href="../recipex-frontend/index.html">Home</a></li>
+        <li><a href="index.html#latest_recipes">Latest Recipes</a></li>
+        <li><a href="../recipex-frontend/cuisines.html">Cuisines</a></li>
+        <li><a href="../recipex-frontend/ingredient_search.html">Ingredient Search</a></li>
+        <li><a href="../recipex-frontend/map.html">Explore Recipes</a></li>
+        <li><a href="../recipex-frontend/create_recipe.html" style="text-decoration: none;">Create Recipe</a></li>
+        <li><a href="../recipex-frontend/contact.html">Contact Us</a></li>
 
+        <!-- Added Login and Signup with id -->
+        <div class="auth-links" id="login-links">
+            <li><a href="login.html" style="text-decoration: none;">Login</a></li>
+            <li><a href="signup.html" style="text-decoration: none;">Signup</a></li>
+        </div>
+    </ul>
 
+    <div id="user-info" style="text-align:right; margin: 1rem; font-weight: bold;"></div>
+    <!-- Profile icon, initially hidden -->
+    
+</nav>
 
-
-
-
-            <!-- Added Login and Signup -->
-            <div class="auth-links">
-                <li><a href="login.html" style="text-decoration: none;">Login</a></li>
-                <li><a href="signup.html" style="text-decoration: none;">Signup</a></li>
-            </div>
-        </ul>
-        <div id="user-info" style="text-align:right; margin: 1rem; font-weight: bold;"></div>
-
-    </nav>
 
     <!--Welcome Content-->
     <div class="container">
@@ -590,7 +614,7 @@
                 <h4>Jaljeera</h4>
             </div>
             <div class="recipe-card">
-                <a href="recipes/" target="_blank">
+                <a href="recipes/drinks/drinks_jigarthanda.html" target="_blank">
                     <img src="../assets/cusines/recipes/drinks/drinks_Jigarthanda.jpg"
                         style="width: 250px; height: 370px; padding-left: 5px; padding-right: 5px;">
                 </a>
@@ -681,40 +705,67 @@
         ">RecipeX</a></p>
     </div>
     <script src="../js/index_logic.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Example: You save user data after login like this:
-            // localStorage.setItem('user', JSON.stringify({name: 'Gaurav', email: 'gaurav@example.com', profilePic: 'path_to_img'}));
+   <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const userEmail = localStorage.getItem('userEmail');
+    const userName = localStorage.getItem('userName');
 
-            const userDataStr = localStorage.getItem('user');
+    const welcomeElement = document.getElementById('welcomeMessage');
+    const loginLinks = document.getElementById('login-links');
+    const profileImg = document.getElementById('profile-img');
 
-            if (userDataStr) {
-                const userData = JSON.parse(userDataStr);
+    if (userEmail && userName) {
+      welcomeElement.textContent = `Welcome, ${userName}!`;
 
-                // Hide login/register links
-                document.getElementById('login-links').style.display = 'none';
+      if (loginLinks) loginLinks.style.display = 'none';
 
-                // Show profile icon
-                const profileIcon = document.getElementById('profile-icon');
-                const profileImg = document.getElementById('profile-img');
-
-                // Set profile image or fallback if none
-                profileImg.src = userData.profilePic || 'https://via.placeholder.com/32?text=U';
-
-                profileIcon.style.display = 'inline-block';
-
-                // Optional: Add click event to go to profile page
-                profileIcon.addEventListener('click', () => {
-                    window.location.href = 'profile.html';
-                });
-            } else {
-                // User not logged in, show login links
-                document.getElementById('login-links').style.display = 'inline';
-                document.getElementById('profile-icon').style.display = 'none';
-            }
+      if (profileImg) {
+        profileImg.src = 'https://via.placeholder.com/32?text=' + userName.charAt(0).toUpperCase();
+        profileImg.style.display = 'inline-block';
+        profileImg.addEventListener('click', () => {
+          window.location.href = 'profile.html';
         });
+      }
 
-    </script>
+     
+    } else {
+      welcomeElement.textContent = 'Welcome to RecipeX!';
+      if (loginLinks) loginLinks.style.display = 'flex';
+      if (profileImg) profileImg.style.display = 'none';
+    }
+  });
+
+
+
+
+
+
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const userName = localStorage.getItem('userName');
+    const welcomeElement = document.getElementById('welcomeMessage');
+    const userInfo = document.getElementById('user-info');
+
+    if (userName) {
+      welcomeElement.textContent = `Welcome, ${userName}!`;
+
+      const logoutButton = document.createElement('button');
+      logoutButton.textContent = 'Logout';
+      logoutButton.id = 'logoutBtn';
+      logoutButton.onclick = function () {
+        localStorage.clear();
+        window.location.href = 'login.html';
+      };
+
+      userInfo.appendChild(logoutButton);
+    } else {
+      welcomeElement.textContent = 'Welcome to RecipeX!';
+    }
+  });
+
+
+</script>
+
 </body>
 
 

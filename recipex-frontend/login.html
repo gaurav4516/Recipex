@@ -87,6 +87,10 @@
       <input type="email" id="email" placeholder="Email" required />
       <input type="password" id="password" placeholder="Password" required />
       <button type="submit">Login</button>
+       
+                <div class="auth-footer">
+                    Already have an account? <a href="signup.html">Signup</a>
+                </div>
     </form>
     <div class="error" id="error"></div>
   </div>
@@ -98,16 +102,17 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const name = document.getElementById('name').value.trim();      
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
-    if (!email || !password) {
-      errorDiv.textContent = 'Please enter both email and password.';
+    if (!email || !password || !name) {
+      errorDiv.textContent = 'Please enter name, email, and password.';
       return;
     }
 
     try {
-      const res = await fetch('https://receipex-backend1.onrender.com/', {
+      const res = await fetch('https://receipex-backend1.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -116,7 +121,11 @@
       const data = await res.json();
 
       if (res.ok) {
+        // LocalStorage me name aur email dono save karo
+        localStorage.setItem('userName', name);
         localStorage.setItem('userEmail', email);
+
+        // Login hone ke baad index.html pe redirect karo
         window.location.href = 'index.html';
       } else {
         errorDiv.textContent = data.error || 'Login failed!';

@@ -14,10 +14,9 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
 
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, postman)
-    if (!origin) return callback(null, true);
+    if (!origin) return callback(null, true); // Allow mobile/postman
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+      const msg = `❌ CORS error: ${origin} not allowed`;
       return callback(new Error(msg), false);
     }
     return callback(null, true);
@@ -26,19 +25,19 @@ app.use(cors({
 
 app.use(express.json()); // Parse JSON requests
 
-// Multer setup for memory storage (image upload handling)
+// Multer setup for image upload
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Connect to MongoDB
+// ------------------ MongoDB Connection ------------------
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => {
-    console.error('❌ MongoDB error:', err);
-    process.exit(1); // Exit if DB connection fails
+    console.error('❌ MongoDB connection error:', err);
+    process.exit(1);
   });
 
-// Schemas
+// ------------------ Schemas ------------------
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
@@ -57,7 +56,14 @@ const recipeSchema = new mongoose.Schema({
 });
 const Recipe = mongoose.model('Recipe', recipeSchema);
 
-// Login route
+// ------------------ Routes ------------------
+
+// Home check
+app.get('/', (req, res) => {
+  res.send('✅ RecipeX Backend is live!');
+});
+
+// ✅ Login Route (Register if new)
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -73,8 +79,12 @@ app.post('/login', async (req, res) => {
       const nameFromEmail = email.split('@')[0];
       user = new User({ email, password, name: nameFromEmail });
       await user.save();
-      console.log('✅ New user added:', user);
-      return res.status(200).json({ message: 'New user registered and logged in' });
+      console.log('🆕 New user added:', user);
+      return res.status(200).json({
+        message: 'New user registered and logged in',
+        name: user.name,
+        email: user.email
+      });
     }
 
     if (user.password !== password) {
@@ -82,14 +92,18 @@ app.post('/login', async (req, res) => {
     }
 
     console.log('✅ Existing user logged in:', user);
-    res.status(200).json({ message: 'Login successful' });
+    res.status(200).json({
+      message: 'Login successful',
+      name: user.name,
+      email: user.email
+    });
   } catch (err) {
-    console.error('Login error:', err);
+    console.error('❌ Login error:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Recipe submission route
+// ✅ Recipe Submission
 app.post('/submit-recipe', upload.single('food_image'), async (req, res) => {
   try {
     const { title, description, steps, category } = req.body;
@@ -122,8 +136,8 @@ app.post('/submit-recipe', upload.single('food_image'), async (req, res) => {
     });
 
     await newRecipe.save();
-
     console.log('✅ Recipe submitted:', newRecipe);
+
     res.status(201).json({ message: 'Recipe submitted successfully!' });
   } catch (error) {
     console.error('❌ Recipe submission error:', error);
@@ -131,12 +145,8 @@ app.post('/submit-recipe', upload.single('food_image'), async (req, res) => {
   }
 });
 
-// Start the server
-const PORT = process.env.PORT ;
+// ------------------ Start Server ------------------
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
-app.get('/', (req, res) => {
-  res.send('✅ RecipeX Backend is live!');
-});
-
