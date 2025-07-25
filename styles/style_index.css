@@ -24,7 +24,7 @@ html{
 }
 
 body{
-    background: url(https://wallpaperaccess.com/full/826922.jpg) center / cover no-repeat;
+    background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092') center / cover no-repeat;
     background-attachment: fixed;
     height: 100vh;
     margin: 0;
